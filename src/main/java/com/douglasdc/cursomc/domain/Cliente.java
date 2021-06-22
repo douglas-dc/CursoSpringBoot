@@ -37,6 +37,9 @@ public class Cliente implements Serializable {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>(); //set é um conjunto, não aceita repetição (uma coleção sem repetições)
 	
+	@OneToMany(mappedBy="cliente") //mapeado no outro lado pelo atributo cliente
+	private List<Pedido> pedidos = new ArrayList<>(); //coleções não são colocadas em construtores
+	
 	public Cliente() {
 		
 	}
@@ -106,6 +109,14 @@ public class Cliente implements Serializable {
 		this.telefones = telefones;
 	}
 
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,6 +141,4 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 }

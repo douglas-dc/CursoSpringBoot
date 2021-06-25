@@ -77,3 +77,16 @@ public class CategoriaResource {
 	}
 	
 }
+
+/*
+todo Resource tem que receber uma request http
+enviar requisição para o Service tratar ela
+retornar algo para o cliente
+EX:
+
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)               recebendo request
+    public ResponseEntity<Equipamento> find(@PathVariable Integer id)
+        Equipamento obj = equipamentoService.findById(id);                enviando requisição para o service tratar ela
+        return ResponseEntity.ok().body(obj);                             dando uma resposta para o cliente
+    }
+*/

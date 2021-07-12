@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import com.douglasdc.cursomc.domain.Cidade;
 import com.douglasdc.cursomc.domain.Cliente;
 import com.douglasdc.cursomc.domain.Endereco;
+import com.douglasdc.cursomc.domain.enums.Perfil;
 import com.douglasdc.cursomc.domain.enums.TipoCliente;
 import com.douglasdc.cursomc.dto.ClienteDTO;
 import com.douglasdc.cursomc.dto.ClienteNewDTO;
 import com.douglasdc.cursomc.repositories.ClienteRepository;
 import com.douglasdc.cursomc.repositories.EnderecoRepository;
+import com.douglasdc.cursomc.security.UserSS;
+import com.douglasdc.cursomc.services.exceptions.AuthorizationException;
 import com.douglasdc.cursomc.services.exceptions.DataIntegrityException;
 import com.douglasdc.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,12 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
